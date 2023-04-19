@@ -5,9 +5,6 @@
 <title>在线听写单词,在线语音背单词,学英语单词,雅思英语词汇在线听写学习 - 文字网</title>
 <meta http-equiv="Cache-Control" content="no-transform">
 <meta http-equiv="Cache-Control" content="no-siteapp">
-<link rel="stylesheet" href="http://www.32cha.com/gongju/style.css">
-<link rel="Shortcut Icon"  href="http://www.32cha.com/favicon.ico" />
-<link rel="Bookmark" href="http://www.32cha.com/favicon.ico" />
 <script src="./jquery.js"></script>
 <style type="text/css">
 body{line-height:1!important;}
@@ -42,7 +39,7 @@ hr{margin:.5rem 0!important;}
 	<button id="convert" type="button" class="btn btn-sm"> 转换 </button>
 	<button id="dictation" type="button" class="btn btn-sm"> 听写 </button>
 	<label for="angle-from">填写时间间隔：</label> 
-	<input type="number" id="time" value="4" min="1">
+	<input type="number" id="time" value="3" min="1">
 	<label for="angle-from">英音</label> 
 	<input type="radio" name="proun" value="1">
 	<label for="angle-from">美音</label> 
@@ -76,11 +73,17 @@ $("button#convert").click(function(){
 	
 	$(".display").empty();
 	var words = $('#txtJSON').val().split("\n");
+
+	words = words.sort(function(){
+		return Math.random() - 0.5;
+	});
+
 	for(i=0;i<words.length;i++){
 		$(".display").append("<div class='word' ><a class='"+words[i]+"' onclick='pronance(this)'>"+words[i]+"</a></div>");
 	}
 		
 });
+
 //听写
 $("button#dictation").click(function(){
 	var childs = $(".display").find("div > a");
@@ -97,10 +100,12 @@ $("button#dictation").click(function(){
 	function myloop(){
 		setTimeout(function(){
 			var audio = $("#audio");
+			console.log($(childs[i]).attr("class"))
 			audio.attr("src","http://dict.youdao.com/dictvoice?audio="+$(childs[i]).attr("class")+"&type="+p);
 			audio.get(0).play();
             count++;
-            if (count>=1){
+            if (count>=2){
+				count = 0;
                 i++;
             }
 			
